@@ -40,6 +40,7 @@ class PlayerCharacter(models.Model):
         choices=CharacterRace.choices,
         default=CharacterRace.HUMAN,
     ) # TODO: enable homebrew
+    # TODO: add background with 5e choices
     level = models.IntegerField(
         default=1,
         validators=[
@@ -49,3 +50,20 @@ class PlayerCharacter(models.Model):
     )
     notes = models.TextField(blank=True)
     player_name = models.CharField(max_length=200)
+
+class InventoryItem(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    character = models.ForeignKey(
+        PlayerCharacter,
+        on_delete=models.CASCADE,
+        related_name='inventory',
+    )
+    quantity = models.PositiveIntegerField(
+        default=1,
+        validators=[
+            MinValueValidator(1, message="Item quantity must be at least 1.")
+        ],
+    )
+    requires_attunement = models.BooleanField(default=False)
+    is_attuned = models.BooleanField(default=False)
