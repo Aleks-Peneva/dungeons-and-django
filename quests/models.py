@@ -1,7 +1,6 @@
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MinValueValidator
 from django.db import models
-
-from playerCharacters.models import Character
+from playerCharacters.models import PlayerCharacter
 
 
 class Quest(models.Model):
@@ -9,7 +8,7 @@ class Quest(models.Model):
     location = models.CharField(max_length=200)
     summary = models.TextField(blank=True)
     involved_characters = models.ManyToManyField(
-        Character,
+        PlayerCharacter,
         blank=True,
         related_name='quests'
     )
