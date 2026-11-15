@@ -17,14 +17,35 @@ class PlayerCharacter(models.Model):
         WARLOCK = 'WARLOCK', 'Warlock'
         WIZARD = 'WIZARD', 'Wizard'
 
+    class CharacterRace(models.TextChoices):
+        HUMAN = 'HUMAN', 'Human'
+        DWARF = 'DWARF', 'Dwarf'
+        ELF = 'ELF', 'Elf'
+        HALFLING = 'HALFLING', 'Halfling'
+        DRAGONBORN = 'DRAGONBORN', 'Dragonborn'
+        GNOME = 'GNOME', 'Gnome'
+        HALF_ELF = 'HALF_ELF', 'Half-Elf'
+        HALF_ORC = 'HALF_ORC', 'Half-Orc'
+        ORC = 'ORC', 'Orc'
+        TIEFLING = 'TIEFLING', 'Tiefling'
+
     name = models.CharField(max_length=200)
     character_class = models.CharField(
         max_length=30,
         choices=CharacterClass.choices,
         default=CharacterClass.ARTIFICER,
-    ) # TODO: enable multiclassing
+    ) # TODO: enable multiclassing and homebrew
+    character_race = models.CharField(
+        max_length=30,
+        choices=CharacterRace.choices,
+        default=CharacterRace.HUMAN,
+    ) # TODO: enable homebrew
     level = models.IntegerField(
         default=1,
-        validators=[MinValueValidator(1), MaxValueValidator(20)])
+        validators=[
+            MinValueValidator(1, message="Character level cannot drop below level 1."),
+            MaxValueValidator(20, message="Maximum level reached."),
+        ]
+    )
     notes = models.TextField(blank=True)
     player_name = models.CharField(max_length=200)
