@@ -1,10 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block content %}
+<p><a href="{% url 'quest:list' %}">&larr; Back</a></p>
+
+<h1>{{ object.title }}</h1>
+<p>
+    <strong>Status:</strong> {{ object.get_status_display }} |
+    <strong>Location:</strong> {{ object.location }} |
+    <strong>Awarding XP:</strong> {{ object.awarding_XP }}
+</p>
+
+<p>
+    <a href="{% url 'quest:update' object.pk %}">Edit Quest</a> |
+    <a href="{% url 'quest:delete' object.pk %}">Delete Quest</a>
+</p>
+
+<hr>
+
+<h2>Summary</h2>
+<p>{{ object.summary|linebreaksbr }}</p>
+<h2>Involved Characters</h2>
+{% if object.assigned_characters.all %}
+    <ul>
+        {% for char in object.involved_characters.all %}
+            <li>
+                <a href="{% url 'characters:detail' char.pk %}">
+                    {{ char.name }} (Lvl {{ char.level }} {{ char.get_character_class_display }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Nobody has embarked on the quest yet.</p>
+{% endif %}
+{% endblock %}

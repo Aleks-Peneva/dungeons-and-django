@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}Delete Quest{% endblock %}
+
+{% block content %}
+<h1>Delete Quest</h1>
+<p>Are you sure you want to permanently delete <strong>"{{ object.title }}"</strong>?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirm Delete</button>
+    <a href="{% url 'quests:detail' object.pk %}">Cancel</a>
+</form>
+{% endblock %}
