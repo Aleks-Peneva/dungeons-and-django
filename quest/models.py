@@ -1,6 +1,6 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-from playerCharacters.models import PlayerCharacter
+from character.models import PlayerCharacter
 
 
 class Quest(models.Model):
@@ -17,7 +17,7 @@ class Quest(models.Model):
     involved_characters = models.ManyToManyField(
         PlayerCharacter,
         blank=True,
-        related_name='quests'
+        related_name='quest'
     )
     awarding_XP = models.IntegerField(
         default=1000,

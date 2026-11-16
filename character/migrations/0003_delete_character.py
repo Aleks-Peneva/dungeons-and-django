@@ -6,8 +6,8 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('playerCharacters', '0002_playercharacter'),
-        ('quests', '0002_remove_quest_involved_characters_and_more'),
+        ('character', '0002_playercharacter'),
+        ('quest', '0002_remove_quest_involved_characters_and_more'),
     ]
 
     operations = [

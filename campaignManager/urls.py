@@ -1,8 +1,7 @@
 from django.urls import path
-from . import views
-
-app_name = 'campaignManager'
+from campaignManager.views import index
 
 urlpatterns = [
-    # TODO: implement GM screen views
+    path('', index, name='index'),
+    # TODO: CRUD views for characters and inventory items
 ]

@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('playerCharacters', '0004_playercharacter_character_race_and_more'),
+        ('character', '0004_playercharacter_character_race_and_more'),
     ]
 
     operations = [
@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('quantity', models.PositiveIntegerField(default=1, validators=[django.core.validators.MinValueValidator(1, message='Item quantity must be at least 1.')])),
                 ('requires_attunement', models.BooleanField(default=False)),
                 ('is_attuned', models.BooleanField(default=False)),
-                ('character', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='inventory', to='playerCharacters.playercharacter')),
+                ('character', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='inventory', to='character.playercharacter')),
             ],
         ),
     ]

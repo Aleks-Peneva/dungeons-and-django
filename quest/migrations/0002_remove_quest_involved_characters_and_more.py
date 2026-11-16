@@ -6,8 +6,8 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('playerCharacters', '0002_playercharacter'),
-        ('quests', '0001_initial'),
+        ('character', '0002_playercharacter'),
+        ('quest', '0001_initial'),
     ]
 
     operations = [
@@ -18,6 +18,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='quest',
             name='involved_characters',
-            field=models.ManyToManyField(blank=True, related_name='quests', to='playerCharacters.playercharacter'),
+            field=models.ManyToManyField(blank=True, related_name='quest', to='character.playercharacter'),
         ),
     ]

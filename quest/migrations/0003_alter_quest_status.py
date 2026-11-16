@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('quests', '0002_remove_quest_involved_characters_and_more'),
+        ('quest', '0002_remove_quest_involved_characters_and_more'),
     ]
 
     operations = [

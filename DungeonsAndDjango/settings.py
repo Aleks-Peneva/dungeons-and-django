@@ -32,8 +32,8 @@ ALLOWED_HOSTS = []
 
 PROJECT_APPS = [
     'campaignManager',
-    'playerCharacters',
-    'quests',
+    'character',
+    'quest',
 ]
 
 INSTALLED_APPS = [

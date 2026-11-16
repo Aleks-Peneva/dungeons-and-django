@@ -1,8 +1,7 @@
 from django.urls import path
-from . import views
-
-app_name = 'playerCharacters'
+from quest.views import index
 
 urlpatterns = [
+    path('', index, name='index'),
     # TODO: CRUD views for characters and inventory items
 ]

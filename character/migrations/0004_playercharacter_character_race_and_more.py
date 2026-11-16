@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('playerCharacters', '0003_delete_character'),
+        ('character', '0003_delete_character'),
     ]
 
     operations = [

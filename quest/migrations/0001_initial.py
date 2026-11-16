@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('playerCharacters', '0001_initial'),
+        ('character', '0001_initial'),
     ]
 
     operations = [
@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('summary', models.TextField(blank=True)),
                 ('awarding_XP', models.IntegerField(default=1000, validators=[django.core.validators.MinValueValidator(1000)])),
                 ('status', models.CharField(max_length=200)),
-                ('involved_characters', models.ManyToManyField(blank=True, related_name='quests', to='playerCharacters.character')),
+                ('involved_characters', models.ManyToManyField(blank=True, related_name='quest', to='character.character')),
             ],
         ),
     ]
