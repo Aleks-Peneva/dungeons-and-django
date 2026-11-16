@@ -1,38 +1,48 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ object.title }}{% endblock %}
+{% block title %}Quests{% endblock %}
 
 {% block content %}
-<p><a href="{% url 'quest:list' %}">&larr; Back</a></p>
+<h1>Quest Board</h1>
+<p><a href="{% url 'quest:create' %}">Create New Quest</a></p>
 
-<h1>{{ object.title }}</h1>
-<p>
-    <strong>Status:</strong> {{ object.get_status_display }} |
-    <strong>Location:</strong> {{ object.location }} |
-    <strong>Awarding XP:</strong> {{ object.awarding_XP }}
-</p>
-
-<p>
-    <a href="{% url 'quest:update' object.pk %}">Edit Quest</a> |
-    <a href="{% url 'quest:delete' object.pk %}">Delete Quest</a>
-</p>
-
-<hr>
-
-<h2>Summary</h2>
-<p>{{ object.summary|linebreaksbr }}</p>
-<h2>Involved Characters</h2>
-{% if object.assigned_characters.all %}
+{% if quests %}
     <ul>
-        {% for char in object.involved_characters.all %}
+        {% for quest in quests %}
             <li>
-                <a href="{% url 'characters:detail' char.pk %}">
-                    {{ char.name }} (Lvl {{ char.level }} {{ char.get_character_class_display }})
-                </a>
+                <h2><a href="{% url 'quest:detail' quest.pk %}">{{ quest.title }}</a></h2>
+                <p>
+                    <strong>Status:</strong> {{ quest.get_status_display }} |
+                    <strong>Location:</strong> {{ quest.location }} |
+                    <strong>Awarding XP:</strong> {{ quest.awarding_XP }}
+                </p>
+                <p>{{ quest.summary|truncatewords:30 }}</p>
+
+                <p><strong>Involved Characters:</strong></p>
+                {% if quest.involved_characters.all %}
+                    <ul>
+                        {% for char in quest.involved_characters.all %}
+                            <li>
+                                <a href="{% url 'character:detail' char.pk %}">
+                                    {{ char.name }} (Lvl {{ char.level }} {{ char.get_character_class_display }})
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>None assigned</p>
+                {% endif %}
+
+                <p>
+                    <a href="{% url 'quest:detail' quest.pk %}">View Details</a> |
+                    <a href="{% url 'quest:update' quest.pk %}">Edit</a> |
+                    <a href="{% url 'quest:delete' quest.pk %}">Delete</a>
+                </p>
+                <hr>
             </li>
         {% endfor %}
     </ul>
 {% else %}
-    <p>Nobody has embarked on the quest yet.</p>
+    <p>No quests found. <a href="{% url 'quest:create' %}">Create the first quest</a>.</p>
 {% endif %}
 {% endblock %}

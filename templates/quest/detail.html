@@ -26,7 +26,7 @@
     <ul>
         {% for char in object.involved_characters.all %}
             <li>
-                <a href="{% url 'characters:detail' char.pk %}">
+                <a href="{% url 'character:detail' char.pk %}">
                     {{ char.name }} (Lvl {{ char.level }} {{ char.get_character_class_display }})
                 </a>
             </li>
