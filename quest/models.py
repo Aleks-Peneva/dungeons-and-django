@@ -37,7 +37,7 @@ class Quest(models.Model):
         return f"[{self.get_status_display()}] {self.title}"
 
     def get_absolute_url(self):
-        return reverse('quests:detail', kwargs={'pk': self.pk})
+        return reverse('quest:detail', kwargs={'pk': self.pk})
 
     def party_size(self):
         return self.involved_characters.count()

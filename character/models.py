@@ -57,7 +57,7 @@ class PlayerCharacter(models.Model):
         ordering = ['-level', 'name']
 
     def __str__(self):
-        return f"{self.player_name} (Level {self.level} {self.get_character_class_display})"
+        return f"{self.name} (Level {self.level} {self.get_character_class_display()})"
 
     def get_absolute_url(self):
         return reverse('character:detail', kwargs={'pk': self.pk})
