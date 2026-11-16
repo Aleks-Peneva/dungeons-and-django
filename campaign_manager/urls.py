@@ -1,5 +1,5 @@
 from django.urls import path
-from campaignManager.views import index
+from campaign_manager.views import index
 
 urlpatterns = [
     path('', index, name='index'),

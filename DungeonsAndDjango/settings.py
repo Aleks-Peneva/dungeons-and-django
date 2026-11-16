@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 PROJECT_APPS = [
-    'campaignManager',
+    'campaign_manager',
     'character',
     'quest',
 ]

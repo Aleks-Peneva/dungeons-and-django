@@ -1,5 +1,6 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.urls import reverse
 
 class PlayerCharacter(models.Model):
     class CharacterClass(models.TextChoices):
@@ -29,7 +30,7 @@ class PlayerCharacter(models.Model):
         ORC = 'ORC', 'Orc'
         TIEFLING = 'TIEFLING', 'Tiefling'
 
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     character_class = models.CharField(
         max_length=30,
         choices=CharacterClass.choices,
@@ -50,6 +51,14 @@ class PlayerCharacter(models.Model):
     )
     notes = models.TextField(blank=True)
     player_name = models.CharField(max_length=200)
+    alive = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['-level', 'name']
+
+    def __str__(self):
+        return f"{self.player_name} (Level {self.level} {self.character_class})"
+
 
 class InventoryItem(models.Model):
     name = models.CharField(max_length=200)
@@ -67,3 +76,9 @@ class InventoryItem(models.Model):
     )
     requires_attunement = models.BooleanField(default=False)
     is_attuned = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return f"{self.quantity} {self.name}(s))"

@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class CampaignmanagerConfig(AppConfig):
-    name = 'campaignManager'
+    name = 'campaign_manager'
