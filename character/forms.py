@@ -23,7 +23,13 @@ class PlayerCharacterCreateForm(forms.ModelForm):
     }
     widgets = {
         'name': forms.TextInput(attrs={'class': 'form-control'}),
-        # TODO: add the rest after testing
+        'player_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., Alex'}),
+        'character_class': forms.Select(attrs={'class': 'form-select'}),
+        'character_race': forms.Select(attrs={'class': 'form-select'}),
+        'level': forms.NumberInput(attrs={'class': 'form-control', 'min': 1, 'max': 20}),
+        'alive': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        'notes': forms.Textarea(
+            attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Backstory, bonds, or guild reputation...'}),
     }
 
 

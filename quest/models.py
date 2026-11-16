@@ -1,6 +1,7 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 from character.models import PlayerCharacter
+from django.urls import reverse
 
 
 class Quest(models.Model):
@@ -27,3 +28,16 @@ class Quest(models.Model):
         choices=QuestStatus.choices,
         default=QuestStatus.UNDISCOVERED,
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"[{self.get_status_display()}] {self.title}"
+
+    def get_absolute_url(self):
+        return reverse('quests:detail', kwargs={'pk': self.pk})
+
+    def party_size(self):
+        return self.involved_characters.count()
