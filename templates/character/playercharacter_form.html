@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Edit Player Character{% else %}Player Character{% endif %}{% endblock %}
+
+{% block content %}
+<h1>{% if object %}Edit Player Character: {{ object.name }}{% else %}Player Character{% endif %}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Player Character</button>
+    <a href="{% url 'character:list' %}">Cancel</a>
+</form>
+{% endblock %}

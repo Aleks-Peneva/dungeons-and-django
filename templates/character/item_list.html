@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Item Vault{% endblock %}
+
+{% block content %}
+<h1>Item Vault &amp; Armory</h1>
+<p><a href="{% url 'characters:item-create' %}">Log New Item</a></p>
+
+<div>
+    <strong>Filter:</strong>
+    <a href="{% url 'characters:item-list' %}">All Items</a> |
+    <a href="{% url 'characters:item-list' %}?attuned=yes">Attuned Only</a>
+</div>
+
+<hr>
+
+{% if items %}
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Bearer</th>
+                <th>Qty</th>
+                <th>Requires Attunement</th>
+                <th>Attuned</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td><a href="{% url 'character:detail' item.character.pk %}">{{ item.character.name }}</a></td>
+                    <td>{{ item.quantity }}</td>
+                    <<td>{% if item.requires_attunement %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if item.is_attuned %}Yes{% else %}No{% endif %}</td>
+                    <td>
+                        <a href="{% url 'character:item-update' item.pk %}">Edit</a> |
+                        <a href="{% url 'character:item-delete' item.pk %}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No items added to inventory yet. <a href="{% url 'character:item-create' %}">Log the first item</a>.</p>
+{% endif %}
+{% endblock %}

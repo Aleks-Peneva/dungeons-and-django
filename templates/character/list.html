@@ -1,10 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}Player Characters{% endblock %}
+
+{% block content %}
+<h1>Player Characters</h1>
+<p><a href="{% url 'character:create' %}">Create Player Character</a></p>
+
+<div>
+    <strong>Filter:</strong>
+    <a href="{% url 'character:list' %}">All</a> |
+    <a href="{% url 'character:list' %}?alive=true">Alive</a> |
+    <a href="{% url 'character:list' %}?alive=false">Dead</a>
+</div>
+
+<div>
+    <strong>Sort:</strong>
+    <a href="{% url 'character:list' %}">Default (Level)</a> |
+    <a href="{% url 'character:list' %}?sort=name">Name (A-Z)</a>
+</div>
+
+<hr>
+
+{% if characters %}
+    <ul>
+        {% for character in characters %}
+            <li>
+                <h2><a href="{% url 'character:detail' character.pk %}">{{ character.name }}</a></h2>
+                <p>
+                    Lvl {{ character.level }} {{ character.get_character_class_display }} |
+                    Race: {{ character.get_character_race_display }}
+                    Player: {{ character.player_name }} |
+                    Status: {% if character.alive %}Alive{% else %}Dead{% endif %}
+                </p>
+                <p>
+                    <a href="{% url 'character:detail' character.pk %}">View Character Sheet</a> |
+                    <a href="{% url 'character:update' character.pk %}">Edit</a> |
+                    <a href="{% url 'character:delete' character.pk %}">Delete</a>
+                </p>
+                <hr>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No player characters created yet. <a href="{% url 'character:create' %}">Create the first player character</a>.</p>
+{% endif %}
+{% endblock %}

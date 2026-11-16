@@ -1,10 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block content %}
+<p><a href="{% url 'character:list' %}">&larr; Back</a></p>
+
+<h1>{{ object.name }}</h1>
+<p>
+    <strong>Class:</strong> {{ object.get_character_class_display }} |
+    <strong>Race:</strong> {{ object.get_character_race_display }} |
+    <strong>Level:</strong> {{ object.level }} |
+    <strong>Player:</strong> {{ object.player_name }} |
+    <strong>Status:</strong> {% if object.alive %}Alive{% else %}Dead{% endif %}
+</p>
+
+<p>
+    <a href="{% url 'character:update' object.pk %}">Edit Player Character</a> |
+    <a href="{% url 'character:delete' object.pk %}">Delete Player Character</a>
+</p>
+
+{% if object.notes %}
+    <h2>Chronicle &amp; Notes</h2>
+    <p>{{ object.notes|linebreaksbr }}</p>
+{% endif %}
+{% endblock %}

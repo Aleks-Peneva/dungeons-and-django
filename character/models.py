@@ -57,8 +57,10 @@ class PlayerCharacter(models.Model):
         ordering = ['-level', 'name']
 
     def __str__(self):
-        return f"{self.player_name} (Level {self.level} {self.character_class})"
+        return f"{self.player_name} (Level {self.level} {self.get_character_class_display})"
 
+    def get_absolute_url(self):
+        return reverse('character:detail', kwargs={'pk': self.pk})
 
 class InventoryItem(models.Model):
     name = models.CharField(max_length=200)
@@ -82,3 +84,6 @@ class InventoryItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} {self.name}(s))"
+
+    def get_absolute_url(self):
+        return reverse('character:detail', kwargs={'pk': self.character.pk})
