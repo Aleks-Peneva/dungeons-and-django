@@ -1,6 +1,6 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from character.forms import PlayerCharacterCreateForm
+from character.forms import PlayerCharacterCreateForm, PlayerCharacterUpdateForm
 from character.models import PlayerCharacter
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 

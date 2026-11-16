@@ -1,9 +1,11 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from .models import PlayerCharacter, InventoryItem
 
 class PlayerCharacterCreateForm(forms.ModelForm):
     class Meta:
         model = PlayerCharacter
+        exclude = ['inventory']
         labels = {
             'name': 'Character Name',
             'player_name': 'Player Name',
@@ -49,3 +51,18 @@ class InventoryItemForm(forms.ModelForm):
             'is_attuned': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Item properties,charges, damage...'}),
         }
+
+        def clean(self):
+            cleaned_data = super().clean()
+            character = cleaned_data.get('character')
+            is_attuned = cleaned_data.get('is_attuned')
+
+            if character and is_attuned:
+                attuned_items = character.inventory.filter(is_attuned=True)
+                if self.instance.pk:
+                    attuned_items = attuned_items.exclude(pk=self.instance.pk)
+                if attuned_items.count() >= 3:
+                    raise ValidationError(
+                        f"{character.name} is already attuned to 3 magic items, they need to unattune from one of them first."
+                    )
+            return cleaned_data

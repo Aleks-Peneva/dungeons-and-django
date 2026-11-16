@@ -1,8 +1,9 @@
 from django.urls import path
-from character.views import index, characters_list
+from . import views
 
 urlpatterns = [
-    path('', index, name='index'),
-    path('character/', characters_list, name='list'),
-    # TODO: CRUD views for characters and inventory items
+    path('', views.CharacterListView.as_view(), name='list'),
+    path('new/', views.CharacterCreateView.as_view(), name='create'),
+    path('<int:pk>/edit/', views.CharacterUpdateView.as_view(), name='update'),
+    # TODO: finish CRUD views for characters and inventory items
 ]
