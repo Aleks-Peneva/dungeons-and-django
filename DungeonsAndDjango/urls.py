@@ -23,4 +23,3 @@ urlpatterns = [
     path('character/', include('character.urls')),
     path('quest/', include('quest.urls')),
 ]
-# TODO: disable admin panel before submission
