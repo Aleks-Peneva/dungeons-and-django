@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<footer class="mt-auto py-4 text-center text-light border-top border-warning" style="background-color: #120e0c;">
+    <div class="container">
+        <p class="mb-1 fantasy-font text-warning">West Marches Campaign Manager</p>
+        <small class="text-secondary">
+            <a href="{% url 'campaign_manager:dmscreen' %}" class="text-secondary text-decoration-none me-2">DM screen</a> &bull;
+            <a href="{% url 'character:list' %}" class="text-secondary text-decoration-none mx-2">Adventurers</a> &bull;
+            <a href="{% url 'character:item-list' %}" class="text-secondary text-decoration-none mx-2">Inventory Vault</a> &bull;
+            <a href="{% url 'quest:list' %}" class="text-secondary text-decoration-none mx-2">Quest Board</a> &bull;
+            <a href="{% url 'campaign_manager:about' %}" class="text-secondary text-decoration-none ms-2">About West Marches</a>
+        </small>
+    </div>
+</footer>

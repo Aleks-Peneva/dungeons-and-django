@@ -4,12 +4,12 @@
 
 {% block content %}
 <h1>Item Vault &amp; Armory</h1>
-<p><a href="{% url 'characters:item-create' %}">Log New Item</a></p>
+<p><a href="{% url 'character:item-create' %}">Log New Item</a></p>
 
 <div>
     <strong>Filter:</strong>
-    <a href="{% url 'characters:item-list' %}">All Items</a> |
-    <a href="{% url 'characters:item-list' %}?attuned=yes">Attuned Only</a>
+    <a href="{% url 'character:item-list' %}">All Items</a> |
+    <a href="{% url 'character:item-list' %}?attuned=yes">Attuned Only</a>
 </div>
 
 <hr>
