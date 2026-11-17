@@ -18,7 +18,7 @@
     <div class="d-flex gap-2">
         <a href="{% url 'character:list' %}" class="btn btn-sm {% if not request.GET.status %}btn-blackberry{% else %}btn-powder{% endif %}">All Heroes</a>
         <a href="{% url 'character:list' %}?status=alive" class="btn btn-sm {% if request.GET.status == 'alive' %}btn-blackberry{% else %}btn-powder{% endif %}">Alive</a>
-        <a href="{% url 'character:list' %}?status=dead" class="btn btn-sm {% if request.GET.status == 'dead' %}btn-blackberry{% else %}btn-powder{% endif %}">Fallen</a>
+        <a href="{% url 'character:list' %}?status=fallen" class="btn btn-sm {% if request.GET.status == 'fallen' %}btn-blackberry{% else %}btn-powder{% endif %}">Fallen</a>
     </div>
     <div class="d-flex gap-2">
         <a href="{% url 'character:list' %}{% if request.GET.status %}?status={{ request.GET.status }}{% endif %}"
