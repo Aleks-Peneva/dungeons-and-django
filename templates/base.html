@@ -8,7 +8,8 @@
 
     <!-- Local Bootstrap 5 (Zero External Network Latency) -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-        <style>
+
+    <style>
         :root, [data-bs-theme="light"] {
             --slate-blue: #6969B3;
             --coffee-bean: #25171A;
@@ -31,8 +32,8 @@
             font-family: Georgia, "Times New Roman", serif;
         }
 
-        /* Force solid Coffee Bean (#25171A) on all non-link text */
-        .guild-card, .guild-card p, .guild-card span, .guild-card div,
+        /* Force solid Coffee Bean (#25171A) on all non-link, non-badge text */
+        .guild-card, .guild-card p, .guild-card span:not(.badge), .guild-card div,
         .guild-card li, .guild-card small, .guild-card label,
         .guild-card td, .guild-card th, .guild-card strong,
         .text-muted, .form-text {
@@ -183,6 +184,7 @@
         }
 
         .badge.bg-dark {
+            background-color: var(--coffee-bean) !important;
             color: var(--powder-blue) !important;
         }
 

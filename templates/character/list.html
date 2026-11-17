@@ -61,16 +61,16 @@
                     {{ character.notes|truncatewords:18|default:"No guild notes recorded yet." }}
                 </p>
 
-                <div class="mt-3 pt-2 border-top card-divider d-flex justify-content-between">
-                    <a href="{% url 'character:detail' character.pk %}" class="btn btn-sm btn-blackberry">
+                <div class="mt-3 pt-3 border-top card-divider d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <a href="{% url 'character:detail' character.pk %}" class="btn btn-blackberry px-3">
                         Inspect Sheet
                     </a>
-                    <div>
-                        <a href="{% url 'character:update' character.pk %}" class="btn btn-sm btn-outline-coffee" title="Edit">
-                            <i class="bi bi-pencil"></i>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'character:update' character.pk %}" class="btn btn-indigo px-3">
+                            Edit
                         </a>
-                        <a href="{% url 'character:delete' character.pk %}" class="btn btn-sm btn-outline-coffee" title="Delete">
-                            <i class="bi bi-trash"></i>
+                        <a href="{% url 'character:delete' character.pk %}" class="btn btn-outline-coffee px-3">
+                            Delete
                         </a>
                     </div>
                 </div>
