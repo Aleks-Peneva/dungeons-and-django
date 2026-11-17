@@ -5,6 +5,6 @@ from django.contrib import admin
 # @admin.register(Quest)
 # class QuestAdmin(admin.ModelAdmin):
 #     list_display = ('title', 'location', 'summary', 'status', 'awarding_XP')
-#     list_filter = ('status',)
+#     list_filter = ('status')
 #     search_fields = ('title', 'location', 'summary')
 #     filter_horizontal = ('involved_characters',)

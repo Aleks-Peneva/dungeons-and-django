@@ -8,49 +8,62 @@
 
     <!-- Local Bootstrap 5 (Zero External Network Latency) -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-
-    <style>
-        :root {
+        <style>
+        :root, [data-bs-theme="light"] {
             --slate-blue: #6969B3;
             --coffee-bean: #25171A;
             --blackberry-cream: #4B244A;
             --indigo-velvet: #533A7B;
             --powder-blue: #98C1D9;
             --powder-blue-tint: #b3d3e6;
+
+            --bs-body-bg: #6969B3;
+            --bs-body-color: #25171A;
+            --bs-body-color-rgb: 37, 23, 26;
+            --bs-emphasis-color: #25171A;
+            --bs-secondary-color: #25171A;
+            --bs-tertiary-color: #25171A;
         }
 
         body {
-            background-color: var(--slate-blue);
-            color: var(--coffee-bean);
+            background-color: var(--slate-blue) !important;
+            color: var(--coffee-bean) !important;
             font-family: Georgia, "Times New Roman", serif;
+        }
+
+        /* Force solid Coffee Bean (#25171A) on all non-link text */
+        .guild-card, .guild-card p, .guild-card span, .guild-card div,
+        .guild-card li, .guild-card small, .guild-card label,
+        .guild-card td, .guild-card th, .guild-card strong,
+        .text-muted, .form-text {
+            color: var(--coffee-bean) !important;
+            opacity: 1 !important;
         }
 
         h1, h2, h3, h4, h5, h6, .navbar-brand, .fantasy-font {
             font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
             letter-spacing: 0.04em;
-            color: var(--coffee-bean);
+            color: var(--coffee-bean) !important;
         }
 
         /* Hyperlinked Headers: Blackberry Cream (#4B244A) */
         h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, .header-link {
             color: var(--blackberry-cream) !important;
             text-decoration: none;
-            transition: opacity 0.15s ease-in-out;
         }
         h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover, .header-link:hover {
             text-decoration: underline;
-            opacity: 0.85;
         }
 
         /* All Other Hyperlinked Text: Indigo Velvet (#533A7B) */
         a:not(.btn):not(.navbar-brand):not(.header-link):not(h1 a):not(h2 a):not(h3 a):not(h4 a):not(h5 a):not(h6 a) {
-            color: var(--indigo-velvet);
-            font-weight: 600;
+            color: var(--indigo-velvet) !important;
+            font-weight: 700;
             text-decoration: underline;
             text-underline-offset: 2px;
         }
         a:not(.btn):not(.navbar-brand):not(.header-link):not(h1 a):not(h2 a):not(h3 a):not(h4 a):not(h5 a):not(h6 a):hover {
-            color: var(--blackberry-cream);
+            color: var(--blackberry-cream) !important;
         }
 
         /* Navbar & Footer on Powder Blue */
@@ -70,7 +83,7 @@
         .navbar-guild .nav-link {
             color: var(--indigo-velvet) !important;
             text-decoration: none !important;
-            font-weight: 600;
+            font-weight: 700;
         }
         .navbar-guild .nav-link:hover {
             color: var(--blackberry-cream) !important;
@@ -79,17 +92,16 @@
 
         .footer-guild {
             background-color: var(--powder-blue);
-            color: var(--coffee-bean);
+            color: var(--coffee-bean) !important;
             border-top: 2px solid var(--blackberry-cream);
         }
 
         /* Light Element Cards & Containers: Powder Blue (#98C1D9) */
         .guild-card {
-            background-color: var(--powder-blue);
+            background-color: var(--powder-blue) !important;
             border: 2px solid var(--blackberry-cream);
             border-radius: 8px;
             box-shadow: 0 6px 16px rgba(37, 23, 26, 0.25);
-            color: var(--coffee-bean);
         }
 
         .guild-card-header {
@@ -100,10 +112,16 @@
             border-top-right-radius: 6px;
         }
 
+        .list-group-item {
+            --bs-list-group-color: #25171A;
+            --bs-list-group-bg: transparent;
+            color: var(--coffee-bean) !important;
+        }
+
         /* Palette Buttons */
         .btn-blackberry {
             background-color: var(--blackberry-cream);
-            color: var(--powder-blue);
+            color: var(--powder-blue) !important;
             border: 1px solid var(--coffee-bean);
             font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
             font-weight: 700;
@@ -111,12 +129,12 @@
         }
         .btn-blackberry:hover {
             background-color: var(--indigo-velvet);
-            color: #ffffff;
+            color: #ffffff !important;
         }
 
         .btn-indigo {
             background-color: var(--indigo-velvet);
-            color: var(--powder-blue);
+            color: var(--powder-blue) !important;
             border: 1px solid var(--coffee-bean);
             font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
             font-weight: 700;
@@ -124,12 +142,12 @@
         }
         .btn-indigo:hover {
             background-color: var(--blackberry-cream);
-            color: #ffffff;
+            color: #ffffff !important;
         }
 
         .btn-powder {
             background-color: var(--powder-blue);
-            color: var(--coffee-bean);
+            color: var(--coffee-bean) !important;
             border: 2px solid var(--blackberry-cream);
             font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
             font-weight: 700;
@@ -137,84 +155,88 @@
         }
         .btn-powder:hover {
             background-color: var(--powder-blue-tint);
-            color: var(--blackberry-cream);
+            color: var(--blackberry-cream) !important;
         }
 
         .btn-outline-coffee {
             background-color: transparent;
-            color: var(--coffee-bean);
+            color: var(--coffee-bean) !important;
             border: 1px solid var(--coffee-bean);
-            font-weight: 600;
+            font-weight: 700;
             text-decoration: none !important;
         }
         .btn-outline-coffee:hover {
             background-color: var(--coffee-bean);
-            color: var(--powder-blue);
+            color: var(--powder-blue) !important;
         }
 
         /* Badges & Dividers */
         .badge-blackberry {
-            background-color: var(--blackberry-cream);
-            color: var(--powder-blue);
+            background-color: var(--blackberry-cream) !important;
+            color: var(--powder-blue) !important;
             font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
         }
 
         .badge-indigo {
-            background-color: var(--indigo-velvet);
-            color: var(--powder-blue);
+            background-color: var(--indigo-velvet) !important;
+            color: var(--powder-blue) !important;
         }
 
-        .palette-divider {
-            border: 0;
-            height: 2px;
-            background-color: var(--powder-blue);
-            opacity: 0.7;
-            margin: 1.5rem 0;
+        .badge.bg-dark {
+            color: var(--powder-blue) !important;
         }
 
         .card-divider {
             border-color: var(--indigo-velvet) !important;
-            opacity: 0.35;
+            opacity: 0.45;
         }
 
-        /* Tables & Form Controls on Powder Blue */
+        /* Tables on Powder Blue */
         .table-guild {
-            color: var(--coffee-bean);
+            --bs-table-color: #25171A;
+            --bs-table-color-state: #25171A;
             --bs-table-bg: transparent;
-            --bs-table-hover-bg: rgba(83, 58, 123, 0.12);
-            border-color: rgba(75, 36, 74, 0.3);
+            --bs-table-hover-color: #25171A;
+            --bs-table-hover-bg: rgba(83, 58, 123, 0.15);
+            border-color: rgba(75, 36, 74, 0.35);
         }
-        .table-guild thead {
-            background-color: var(--blackberry-cream);
-            color: var(--powder-blue);
+        .table-guild > :not(caption) > * > * {
+            color: var(--coffee-bean) !important;
+            background-color: transparent !important;
+        }
+        .table-guild thead th {
+            background-color: var(--blackberry-cream) !important;
+            color: var(--powder-blue) !important;
             font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+            border-bottom: 2px solid var(--coffee-bean);
         }
 
+        /* Form Controls on Powder Blue */
         .guild-card input[type="text"],
         .guild-card input[type="number"],
         .guild-card select,
         .guild-card textarea,
         .guild-subpanel {
-            background-color: var(--powder-blue-tint);
+            background-color: var(--powder-blue-tint) !important;
             border: 1px solid var(--indigo-velvet);
-            color: var(--coffee-bean);
+            color: var(--coffee-bean) !important;
         }
         .guild-card input::placeholder,
         .guild-card textarea::placeholder {
-            color: rgba(37, 23, 26, 0.65);
+            color: rgba(37, 23, 26, 0.7) !important;
         }
         .guild-card input:focus,
         .guild-card select:focus,
         .guild-card textarea:focus {
-            background-color: #cde3f0;
+            background-color: #cde3f0 !important;
             border-color: var(--blackberry-cream);
-            color: var(--coffee-bean);
+            color: var(--coffee-bean) !important;
             box-shadow: 0 0 0 0.2rem rgba(75, 36, 74, 0.25);
         }
         .guild-card input:disabled {
-            background-color: rgba(37, 23, 26, 0.12);
-            color: var(--coffee-bean);
-            opacity: 0.8;
+            background-color: rgba(37, 23, 26, 0.14) !important;
+            color: var(--coffee-bean) !important;
+            opacity: 1 !important;
             cursor: not-allowed;
         }
     </style>
