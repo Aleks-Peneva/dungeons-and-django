@@ -1,48 +1,90 @@
 {% extends 'base.html' %}
 
-{% block title %}Quests{% endblock %}
+{% block title %}Quest Board | West Marches{% endblock %}
 
 {% block content %}
-<h1>Quest Board</h1>
-<p><a href="{% url 'quest:create' %}">Create New Quest</a></p>
+<div class="guild-card p-4 mb-4 d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <div>
+        <h1 class="mb-0 fw-bold"><i class="bi bi-pin-map-fill me-2"></i>Tavern Quest Board</h1>
+        <p class="mb-0">Rumours, bounties, and uncharted hexes awaiting brave souls</p>
+    </div>
+    <a href="{% url 'quest:create' %}" class="btn btn-blackberry">
+        <i class="bi bi-feather me-1"></i> Post New Rumour
+    </a>
+</div>
 
-{% if quests %}
-    <ul>
-        {% for quest in quests %}
-            <li>
-                <h2><a href="{% url 'quest:detail' quest.pk %}">{{ quest.title }}</a></h2>
-                <p>
-                    <strong>Status:</strong> {{ quest.get_status_display }} |
-                    <strong>Location:</strong> {{ quest.location }} |
-                    <strong>Awarding XP:</strong> {{ quest.awarding_XP }}
-                </p>
-                <p>{{ quest.summary|truncatewords:30 }}</p>
+<!-- Filter & Sort Bar -->
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+    <div class="d-flex flex-wrap gap-2">
+        <a href="{% url 'quest:list' %}" class="btn btn-sm {% if not request.GET.status %}btn-blackberry{% else %}btn-powder{% endif %}">All Notices</a>
+        <a href="{% url 'quest:list' %}?status=UNDISCOVERED" class="btn btn-sm {% if request.GET.status == 'UNDISCOVERED' %}btn-blackberry{% else %}btn-powder{% endif %}">Undiscovered</a>
+        <a href="{% url 'quest:list' %}?status=DISCOVERED" class="btn btn-sm {% if request.GET.status == 'DISCOVERED' %}btn-blackberry{% else %}btn-powder{% endif %}">Discovered</a>
+        <a href="{% url 'quest:list' %}?status=IN_PROGRESS" class="btn btn-sm {% if request.GET.status == 'IN_PROGRESS' %}btn-blackberry{% else %}btn-powder{% endif %}">In Progress</a>
+        <a href="{% url 'quest:list' %}?status=COMPLETED" class="btn btn-sm {% if request.GET.status == 'COMPLETED' %}btn-blackberry{% else %}btn-powder{% endif %}">Completed</a>
+        <a href="{% url 'quest:list' %}?status=FAILED" class="btn btn-sm {% if request.GET.status == 'FAILED' %}btn-blackberry{% else %}btn-powder{% endif %}">Failed</a>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{% url 'quest:list' %}?{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}sort=xp_asc" 
+           class="btn btn-sm {% if request.GET.sort == 'xp_asc' %}btn-indigo{% else %}btn-powder{% endif %}">
+            <i class="bi bi-sort-numeric-down me-1"></i>XP: Low to High
+        </a>
+        <a href="{% url 'quest:list' %}?{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}sort=xp_desc" 
+           class="btn btn-sm {% if request.GET.sort == 'xp_desc' %}btn-indigo{% else %}btn-powder{% endif %}">
+            <i class="bi bi-sort-numeric-up-alt me-1"></i>XP: High to Low
+        </a>
+    </div>
+</div>
 
-                <p><strong>Involved Characters:</strong></p>
-                {% if quest.involved_characters.all %}
-                    <ul>
-                        {% for char in quest.involved_characters.all %}
-                            <li>
-                                <a href="{% url 'character:detail' char.pk %}">
-                                    {{ char.name }} (Lvl {{ char.level }} {{ char.get_character_class_display }})
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p>None assigned</p>
-                {% endif %}
+<div class="row g-4">
+    {% for quest in quests %}
+    <div class="col-md-6">
+        <div class="card guild-card h-100">
+            <div class="guild-card-header d-flex justify-content-between align-items-center">
+                <span class="fw-bold small text-uppercase">
+                    <i class="bi bi-compass me-1"></i>{{ quest.location }}
+                </span>
+                <span class="badge badge-blackberry">{{ quest.get_status_display }}</span>
+            </div>
+            <div class="card-body d-flex flex-column">
+                <h4 class="card-title fw-bold">
+                    <a href="{% url 'quest:detail' quest.pk %}">{{ quest.title }}</a>
+                </h4>
+                <p class="small mb-2">Awarding XP: <strong>{{ quest.awarding_XP }}</strong></p>
+                <p class="card-text flex-grow-1">{{ quest.summary|truncatewords:25 }}</p>
+                
+                <div class="mb-3">
+                    <small class="d-block mb-1 fw-bold">Expedition Party:</small>
+                    {% for char in quest.involved_characters.all %}
+                        <a href="{% url 'character:detail' char.pk %}" class="me-2">
+                            <i class="bi bi-person-badge me-1"></i>{{ char.name }}
+                        </a>
+                    {% empty %}
+                        <span class="small fst-italic">No party formed yet</span>
+                    {% endfor %}
+                </div>
 
-                <p>
-                    <a href="{% url 'quest:detail' quest.pk %}">View Details</a> |
-                    <a href="{% url 'quest:update' quest.pk %}">Edit</a> |
-                    <a href="{% url 'quest:delete' quest.pk %}">Delete</a>
-                </p>
-                <hr>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No quests found. <a href="{% url 'quest:create' %}">Create the first quest</a>.</p>
-{% endif %}
+                <div class="pt-2 border-top card-divider d-flex justify-content-between">
+                    <a href="{% url 'quest:detail' quest.pk %}" class="btn btn-sm btn-blackberry">Read Notice</a>
+                    <div>
+                        <a href="{% url 'quest:update' quest.pk %}" class="btn btn-sm btn-outline-coffee">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'quest:delete' quest.pk %}" class="btn btn-sm btn-outline-coffee">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="guild-card p-5 text-center">
+            <h3>The Quest Board is Bare</h3>
+            <p class="mb-3">Pin a new rumour or dungeon hook to entice your players.</p>
+            <a href="{% url 'quest:create' %}" class="btn btn-blackberry">Post a Quest</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

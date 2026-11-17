@@ -1,69 +1,148 @@
 {% extends 'base.html' %}
+{% load guild_extras %}
 
-{% block title %}Dungeon Master Screen{% endblock %}
+{% block title %}Guildhall Dashboard | West Marches{% endblock %}
 
 {% block content %}
+{% guild_summary_counts as stats %}
 
-<h1>Manage Campaign</h1>
-<p>
-    <a href="{% url 'character:create' %}">Recruit Adventurer</a> |
-    <a href="{% url 'quest:create' %}">Post New Quest</a> |
-    <a href="{% url 'character:item-create' %}">Log Treasure</a>
-</p>
+<!-- Hero Banner -->
+<div class="guild-card p-4 p-md-5 mb-4 text-center">
+    <h1 class="display-5 fw-bold mb-2">
+        <i class="bi bi-shield-fill-exclamation me-2" style="color: var(--blackberry-cream);"></i>Welcome to the Frontier Guildhall
+    </h1>
+    <p class="lead fst-italic mb-4">
+        Organise rotating expeditions, track adventurer satchels, and chronicle the uncharted West Marches.
+    </p>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+        <a href="{% url 'character:create' %}" class="btn btn-blackberry px-4">
+            <i class="bi bi-person-plus-fill me-1"></i> Recruit Adventurer
+        </a>
+        <a href="{% url 'quest:create' %}" class="btn btn-indigo px-4">
+            <i class="bi bi-feather me-1"></i> Post New Quest
+        </a>
+        <a href="{% url 'character:item-create' %}" class="btn btn-outline-coffee px-4">
+            <i class="bi bi-gem me-1"></i> Log Treasure
+        </a>
+    </div>
+</div>
 
-<hr>
+<!-- Live Campaign Telemetry -->
+<div class="row g-3 mb-4 text-center">
+    <div class="col-6 col-md-3">
+        <div class="guild-card p-3 h-100">
+            <div class="small text-uppercase fw-bold">Active Roster</div>
+            <div class="fs-2 fw-bold fantasy-font" style="color: var(--blackberry-cream);">{{ stats.living_heroes }}</div>
+            <small>{{ stats.fallen_heroes }} Fallen</small>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="guild-card p-3 h-100">
+            <div class="small text-uppercase fw-bold">Open Rumours</div>
+            <div class="fs-2 fw-bold fantasy-font" style="color: var(--blackberry-cream);">{{ stats.open_quests }}</div>
+            <small>Awaiting Parties</small>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="guild-card p-3 h-100">
+            <div class="small text-uppercase fw-bold">Quests Cleared</div>
+            <div class="fs-2 fw-bold fantasy-font" style="color: var(--blackberry-cream);">{{ completed_quests_count }}</div>
+            <small>Completed Expeditions</small>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="guild-card p-3 h-100">
+            <div class="small text-uppercase fw-bold">Vault Relics</div>
+            <div class="fs-2 fw-bold fantasy-font" style="color: var(--blackberry-cream);">{{ total_items_count }}</div>
+            <small>Tracked Items</small>
+        </div>
+    </div>
+</div>
 
-<h2>Campaign Summary</h2>
-<ul>
-    <li><strong>Completed Quests:</strong> {{ completed_quests_count }}</li>
-    <li><strong>Tracked Items:</strong> {{ total_items_count }}</li>
-</ul>
+<div class="row g-4">
+    <!-- Active & Open Quests -->
+    <div class="col-lg-6">
+        <div class="guild-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center border-bottom card-divider pb-2 mb-3">
+                <h4 class="mb-0 fw-bold"><i class="bi bi-map me-2"></i>Frontier Quest Board</h4>
+                <a href="{% url 'quest:list' %}" class="btn btn-sm btn-outline-coffee">View All</a>
+            </div>
 
-<hr>
+            {% if active_quests %}
+                <div class="list-group list-group-flush">
+                    {% for quest in active_quests %}
+                    <div class="list-group-item bg-transparent px-0 border-bottom card-divider">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-1 fw-bold"><a href="{% url 'quest:detail' quest.pk %}">{{ quest.title }}</a></h5>
+                            <span class="badge badge-blackberry">{{ quest.get_status_display }}</span>
+                        </div>
+                        <small>
+                            <i class="bi bi-geo-alt me-1"></i>{{ quest.region }} &bull; Recommended Lvl {{ quest.recommended_level }}
+                        </small>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="fst-italic my-3">No active rumours on the board yet. Post a quest to begin!</p>
+            {% endif %}
+        </div>
+    </div>
 
-<h2>Active &amp; Open Quests</h2>
-{% if active_quests %}
-    <ul>
-        {% for quest in active_quests %}
-            <li>
-                <a href="{% url 'quest:detail' quest.pk %}">{{ quest.title }}</a>
-                ({{ quest.get_status_display }} &mdash; {{ quest.location }}, awarding {{ quest.awarding_XP }} XP)
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No active leads on quests yet.</p>
-{% endif %}
-<p><a href="{% url 'quest:list' %}">View All Quests</a></p>
+    <!-- Highest Level Characters & Recent Loot -->
+    <div class="col-lg-6">
+        <div class="guild-card p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center border-bottom card-divider pb-2 mb-3">
+                <h4 class="mb-0 fw-bold"><i class="bi bi-trophy-fill me-2"></i>Highest Level Adventurers</h4>
+                <a href="{% url 'character:list' %}" class="btn btn-sm btn-outline-coffee">Full Roster</a>
+            </div>
 
-<h2>Highest Level Adventurers</h2>
-{% if highest_level_characters %}
-    <ul>
-        {% for char in highest_level_characters %}
-            <li>
-                <a href="{% url 'character:detail' char.pk %}">{{ char.name }}</a>
-                &mdash; Lvl {{ char.level }} {{ char.get_character_class_display }}
-                ({% if char.alive %}Alive{% else %}Fallen{% endif %})
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No heroes registered in the ledger yet.</p>
-{% endif %}
-<p><a href="{% url 'character:list' %}">View Full Roster</a></p>
+            {% if highest_level_characters %}
+                <ul class="list-group list-group-flush">
+                    {% for char in highest_level_characters %}
+                    <li class="list-group-item bg-transparent px-0 border-bottom card-divider d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0 fw-bold"><a href="{% url 'character:detail' char.pk %}">{{ char.name }}</a></h6>
+                            <span class="small d-block">
+                                Lvl {{ char.level }} {{ char.get_character_class_display }} ({{ char.player_name }})
+                            </span>
+                        </div>
+                        {% if char.alive %}
+                            <span class="badge badge-indigo">Alive</span>
+                        {% else %}
+                            <span class="badge bg-dark">Fallen</span>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="fst-italic my-2">No heroes registered in the ledger yet.</p>
+            {% endif %}
+        </div>
 
-<h2>Recent Loot Acquired</h2>
-{% if recent_loot %}
-    <ul>
-        {% for item in recent_loot %}
-            <li>
-                {{ item.quantity }} {{ item.name }}(s) equipped by
-                <a href="{% url 'character:detail' item.character.pk %}">{{ item.character.name }}</a>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>The Inventory Vault is currently empty.</p>
-{% endif %}
-<p><a href="{% url 'character:item-list' %}">View Inventory Vault</a></p>
+        <div class="guild-card p-4">
+            <div class="d-flex justify-content-between align-items-center border-bottom card-divider pb-2 mb-3">
+                <h4 class="mb-0 fw-bold"><i class="bi bi-backpack2 me-2"></i>Recent Loot Acquired</h4>
+                <a href="{% url 'character:item-list' %}" class="btn btn-sm btn-outline-coffee">Guild Vault</a>
+            </div>
+
+            {% if recent_loot %}
+                <ul class="list-group list-group-flush">
+                    {% for item in recent_loot %}
+                    <li class="list-group-item bg-transparent px-0 border-bottom card-divider d-flex justify-content-between align-items-center">
+                        <span>
+                            <strong>{{ item.name }}</strong> (x{{ item.quantity }})
+                            {% if item.attuned %}<i class="bi bi-stars" title="Attuned"></i>{% endif %}
+                        </span>
+                        <small>
+                            Held by <a href="{% url 'character:detail' item.character.pk %}">{{ item.character.name }}</a>
+                        </small>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="fst-italic my-2">The Guild Vault is currently empty.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,38 +1,51 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ object.title }}{% endblock %}
+{% block title %}{{ object.title }} | Quest Notice{% endblock %}
 
 {% block content %}
-<p><a href="{% url 'quest:list' %}">&larr; Back</a></p>
+<div class="mb-3">
+    <a href="{% url 'quest:list' %}" class="btn btn-sm btn-powder">
+        <i class="bi bi-arrow-left me-1"></i>Back to Quest Board
+    </a>
+</div>
 
-<h1>{{ object.title }}</h1>
-<p>
-    <strong>Status:</strong> {{ object.get_status_display }} |
-    <strong>Location:</strong> {{ object.location }} |
-    <strong>Awarding XP:</strong> {{ object.awarding_XP }}
-</p>
+<div class="guild-card p-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-start border-bottom card-divider pb-3 mb-4">
+        <div>
+            <span class="badge badge-blackberry mb-2">{{ object.get_status_display }}</span>
+            <h1 class="fw-bold mb-1">{{ object.title }}</h1>
+            <p class="mb-0">
+                <i class="bi bi-geo-alt-fill me-1"></i>Region: <strong>{{ object.region }}</strong>
+                &nbsp;|&nbsp;
+                <i class="bi bi-shield-fill me-1"></i>Awarding XP: <strong>{{ object.awarding_XP }}</strong>
+            </p>
+        </div>
+        <div class="d-flex gap-2 mt-2 mt-md-0">
+            <a href="{% url 'quest:update' object.pk %}" class="btn btn-indigo">
+                <i class="bi bi-pencil-square me-1"></i>Edit Quest
+            </a>
+            <a href="{% url 'quest:delete' object.pk %}" class="btn btn-outline-coffee">
+                <i class="bi bi-trash me-1"></i>Delete
+            </a>
+        </div>
+    </div>
 
-<p>
-    <a href="{% url 'quest:update' object.pk %}">Edit Quest</a> |
-    <a href="{% url 'quest:delete' object.pk %}">Delete Quest</a>
-</p>
+    <div class="mb-4">
+        <h4 class="fw-bold">Public Rumour &amp; Synopsis</h4>
+        <p class="fs-5">{{ object.summary|linebreaksbr }}</p>
+    </div>
 
-<hr>
-
-<h2>Summary</h2>
-<p>{{ object.summary|linebreaksbr }}</p>
-<h2>Involved Characters</h2>
-{% if object.assigned_characters.all %}
-    <ul>
-        {% for char in object.involved_characters.all %}
-            <li>
+    <div>
+        <h4 class="fw-bold mb-3"><i class="bi bi-people-fill me-2"></i>Assigned Expedition Party</h4>
+        <div class="d-flex flex-wrap gap-3">
+            {% for char in object.involved_characters.all %}
                 <a href="{% url 'character:detail' char.pk %}">
-                    {{ char.name }} (Lvl {{ char.level }} {{ char.get_character_class_display }})
+                    <i class="bi bi-person-badge me-1"></i>{{ char.name }} (Lvl {{ char.level }} {{ char.get_character_class_display }})
                 </a>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>Nobody has embarked on the quest yet.</p>
-{% endif %}
+            {% empty %}
+                <p class="fst-italic">No characters have signed up for this expedition yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,47 +1,90 @@
 {% extends 'base.html' %}
 
-{% block title %}Player Characters{% endblock %}
+{% block title %}Guild Roster | West Marches{% endblock %}
 
 {% block content %}
-<h1>Player Characters</h1>
-<p><a href="{% url 'character:create' %}">Create Player Character</a></p>
-
-<div>
-    <strong>Filter:</strong>
-    <a href="{% url 'character:list' %}">All</a> |
-    <a href="{% url 'character:list' %}?alive=true">Alive</a> |
-    <a href="{% url 'character:list' %}?alive=false">Dead</a>
+<div class="guild-card p-4 mb-4 d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <div>
+        <h1 class="mb-0 fw-bold"><i class="bi bi-people-fill me-2"></i>Guild Roster</h1>
+        <p class="mb-0">Active mercenaries and explorers of the frontier</p>
+    </div>
+    <a href="{% url 'character:create' %}" class="btn btn-blackberry">
+        <i class="bi bi-plus-circle me-1"></i> Recruit Adventurer
+    </a>
 </div>
 
-<div>
-    <strong>Sort:</strong>
-    <a href="{% url 'character:list' %}">Default (Level)</a> |
-    <a href="{% url 'character:list' %}?sort=name">Name (A-Z)</a>
+<!-- Filter & Sort Bar -->
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+    <div class="d-flex gap-2">
+        <a href="{% url 'character:list' %}" class="btn btn-sm {% if not request.GET.status %}btn-blackberry{% else %}btn-powder{% endif %}">All Heroes</a>
+        <a href="{% url 'character:list' %}?status=alive" class="btn btn-sm {% if request.GET.status == 'alive' %}btn-blackberry{% else %}btn-powder{% endif %}">Alive</a>
+        <a href="{% url 'character:list' %}?status=dead" class="btn btn-sm {% if request.GET.status == 'dead' %}btn-blackberry{% else %}btn-powder{% endif %}">Fallen</a>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{% url 'character:list' %}{% if request.GET.status %}?status={{ request.GET.status }}{% endif %}"
+           class="btn btn-sm {% if not request.GET.sort %}btn-indigo{% else %}btn-powder{% endif %}">Level (High-Low)</a>
+        <a href="{% url 'character:list' %}?{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}sort=level_asc"
+           class="btn btn-sm {% if request.GET.sort == 'level_asc' %}btn-indigo{% else %}btn-powder{% endif %}">Level (Low-High)</a>
+        <a href="{% url 'character:list' %}?{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}sort=name"
+           class="btn btn-sm {% if request.GET.sort == 'name' %}btn-indigo{% else %}btn-powder{% endif %}">Name (A-Z)</a>
+    </div>
 </div>
 
-<hr>
+<div class="row g-4">
+    {% for character in characters %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card guild-card h-100">
+            <div class="guild-card-header d-flex justify-content-between align-items-center">
+                <span class="badge badge-blackberry">Lvl {{ character.level }}</span>
+                {% if character.alive %}
+                    <span class="fw-bold small"><i class="bi bi-heart-fill me-1"></i>Alive</span>
+                {% else %}
+                    <span class="fw-bold small"><i class="bi bi-skull me-1"></i>Dead</span>
+                {% endif %}
+            </div>
+            <div class="card-body d-flex flex-column">
+                <h4 class="card-title fw-bold mb-1">
+                    <a href="{% url 'character:detail' character.pk %}">{{ character.name }}</a>
+                </h4>
+                <h6 class="fst-italic mb-3">{{ character.get_character_class_display }} &bull; Played by {{ character.player_name }}</h6>
 
-{% if characters %}
-    <ul>
-        {% for character in characters %}
-            <li>
-                <h2><a href="{% url 'character:detail' character.pk %}">{{ character.name }}</a></h2>
-                <p>
-                    Lvl {{ character.level }} {{ character.get_character_class_display }} |
-                    Race: {{ character.get_character_race_display }}
-                    Player: {{ character.player_name }} |
-                    Status: {% if character.alive %}Alive{% else %}Dead{% endif %}
+                <div class="mb-3">
+                    <span class="badge badge-indigo">
+                        <i class="bi bi-backpack me-1"></i>{{ character.inventory.count }} Items
+                    </span>
+                    <span class="badge badge-blackberry">
+                        <i class="bi bi-map me-1"></i>{{ character.quests.count }} Quests
+                    </span>
+                </div>
+
+                <p class="card-text small flex-grow-1">
+                    {{ character.notes|truncatewords:18|default:"No guild notes recorded yet." }}
                 </p>
-                <p>
-                    <a href="{% url 'character:detail' character.pk %}">View Character Sheet</a> |
-                    <a href="{% url 'character:update' character.pk %}">Edit</a> |
-                    <a href="{% url 'character:delete' character.pk %}">Delete</a>
-                </p>
-                <hr>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No player characters created yet. <a href="{% url 'character:create' %}">Create the first player character</a>.</p>
-{% endif %}
+
+                <div class="mt-3 pt-2 border-top card-divider d-flex justify-content-between">
+                    <a href="{% url 'character:detail' character.pk %}" class="btn btn-sm btn-blackberry">
+                        Inspect Sheet
+                    </a>
+                    <div>
+                        <a href="{% url 'character:update' character.pk %}" class="btn btn-sm btn-outline-coffee" title="Edit">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'character:delete' character.pk %}" class="btn btn-sm btn-outline-coffee" title="Delete">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="guild-card p-5 text-center">
+            <h3>The Tavern is Empty</h3>
+            <p class="mb-3">No adventurers match this filter or have signed the guild ledger yet.</p>
+            <a href="{% url 'character:create' %}" class="btn btn-blackberry">Recruit First Adventurer</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

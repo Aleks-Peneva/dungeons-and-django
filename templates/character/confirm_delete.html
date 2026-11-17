@@ -1,14 +1,26 @@
 {% extends 'base.html' %}
 
-{% block title %}Delete Player{% endblock %}
+{% block title %}Confirm Removal | West Marches{% endblock %}
 
 {% block content %}
-<h1>Delete Player Character</h1>
-<p>Are you sure you want to permanently remove <strong>"{{ object.name }}"</strong> and all their inventory items?</p>
-
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Confirm Delete</button>
-    <a href="{% url 'character:detail' object.pk %}">Cancel</a>
-</form>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="guild-card p-4 p-md-5 text-center">
+            <i class="bi bi-exclamation-triangle-fill display-4 mb-3" style="color: var(--blackberry-cream);"></i>
+            <h2 class="fw-bold">Burn Adventurer Record?</h2>
+            <p class="lead mb-4">
+                Are you certain you wish to permanently remove <strong>"{{ object.name }}"</strong> and all of their carried items from the Guild Ledger?
+            </p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'character:detail' object.pk %}" class="btn btn-outline-coffee px-4">Keep Record</a>
+                    <button type="submit" class="btn btn-blackberry px-4">
+                        <i class="bi bi-fire me-1"></i>Confirm Deletion
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

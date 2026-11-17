@@ -1,48 +1,93 @@
 {% extends 'base.html' %}
+{% load guild_extras %}
 
-{% block title %}Item Vault{% endblock %}
+{% block title %}Guild Vault & Armory | West Marches{% endblock %}
 
 {% block content %}
-<h1>Item Vault &amp; Armory</h1>
-<p><a href="{% url 'character:item-create' %}">Log New Item</a></p>
-
-<div>
-    <strong>Filter:</strong>
-    <a href="{% url 'character:item-list' %}">All Items</a> |
-    <a href="{% url 'character:item-list' %}?attuned=yes">Attuned Only</a>
+<div class="guild-card p-4 mb-4 d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <div>
+        <h1 class="mb-0 fw-bold"><i class="bi bi-gem me-2"></i>Guild Vault &amp; Armory</h1>
+        <p class="mb-0">Complete ledger of equipment, magic relics, and supplies across all adventurers</p>
+    </div>
+    <a href="{% url 'character:item-create' %}" class="btn btn-blackberry">
+        <i class="bi bi-plus-circle me-1"></i> Log New Item
+    </a>
 </div>
 
-<hr>
+<div class="mb-4 d-flex gap-2">
+    <a href="{% url 'character:item-list' %}" class="btn btn-sm {% if not request.GET.attuned %}btn-blackberry{% else %}btn-powder{% endif %}">
+        All Equipment
+    </a>
+    <a href="{% url 'character:item-list' %}?attuned=yes" class="btn btn-sm {% if request.GET.attuned == 'yes' %}btn-blackberry{% else %}btn-powder{% endif %}">
+        <i class="bi bi-stars me-1"></i>Attuned Magic Items Only
+    </a>
+</div>
 
-{% if items %}
-    <table>
-        <thead>
-            <tr>
-                <th>Item</th>
-                <th>Bearer</th>
-                <th>Qty</th>
-                <th>Requires Attunement</th>
-                <th>Attuned</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in items %}
+<div class="guild-card p-4">
+    {% if items %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle table-guild mb-0">
+            <thead>
                 <tr>
-                    <td>{{ item.name }}</td>
-                    <td><a href="{% url 'character:detail' item.character.pk %}">{{ item.character.name }}</a></td>
-                    <td>{{ item.quantity }}</td>
-                    <<td>{% if item.requires_attunement %}Yes{% else %}No{% endif %}</td>
-                    <td>{% if item.is_attuned %}Yes{% else %}No{% endif %}</td>
+                    <th>Item Name</th>
+                    <th>Bearer</th>
+                    <th class="text-center">Qty</th>
+                    <th class="text-center">Requires Attunement</th>
+                    <th class="text-center">Attuned</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
                     <td>
-                        <a href="{% url 'character:item-update' item.pk %}">Edit</a> |
-                        <a href="{% url 'character:item-delete' item.pk %}">Delete</a>
+                        <strong>{{ item.name }}</strong>
+                        {% if item.description %}
+                            <div class="small">{{ item.description|truncatewords:15 }}</div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'character:detail' item.character.pk %}">
+                            <i class="bi bi-person-badge me-1"></i>{{ item.character.name }}
+                        </a>
+                    </td>
+                    <td class="text-center">{{ item.quantity }}</td>
+                    <td class="text-center">
+                        {% if item.requires_attunement %}
+                            <span class="badge badge-indigo"><i class="bi bi-stars me-1"></i>Yes</span>
+                        {% else %}
+                            <span>&mdash;</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if item.is_attuned %}
+                            <span class="badge badge-indigo"><i class="bi bi-stars me-1"></i>Yes</span>
+                        {% else %}
+                            <span>&mdash;</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-end text-nowrap">
+                        <a href="{% url 'character:item-update' item.pk %}" class="btn btn-sm btn-outline-coffee" title="Edit Item">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'character:item-delete' item.pk %}" class="btn btn-sm btn-outline-coffee" title="Delete Item">
+                            <i class="bi bi-trash"></i>
+                        </a>
                     </td>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <p>No items added to inventory yet. <a href="{% url 'character:item-create' %}">Log the first item</a>.</p>
-{% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <h3>The Guild Vault is Empty</h3>
+        <p class="mb-3">No equipment or treasure has been recorded yet. Create an adventurer first, then assign items to their satchel.</p>
+        <div class="d-flex justify-content-center gap-2">
+            <a href="{% url 'character:create' %}" class="btn btn-outline-coffee">Recruit Adventurer</a>
+            <a href="{% url 'character:item-create' %}" class="btn btn-blackberry">Log First Item</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

@@ -3,17 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}The DM screen{% endblock %}</title>
+    <title>{% block title %}The Guild Ledger | West Marches{% endblock %}</title>
+
+    <!-- Bootstrap 5 & Icons -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <link rel="stylesheet" href="https://jsdelivr.net">
+
+    <!-- Clean Serif & Sans Fonts for High Readability -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --slate-blue: #6969B3;
+            --coffee-bean: #25171A;
+            --blackberry-cream: #4B244A;
+            --indigo-velvet: #533A7B;
+            --powder-blue: #98C1D9;
+            --powder-blue-tint: #b3d3e6;
+        }
+
+        body {
+            background-color: var(--slate-blue);
+            color: var(--coffee-bean);
+            font-family: 'Lora', serif;
+        }
+
+        h1, h2, h3, h4, h5, h6, .navbar-brand, .fantasy-font {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.04em;
+            color: var(--coffee-bean);
+        }
+
+        /* Hyperlinked Headers: Blackberry Cream (#4B244A) */
+        h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, .header-link {
+            color: var(--blackberry-cream) !important;
+            text-decoration: none;
+            transition: opacity 0.15s ease-in-out;
+        }
+        h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover, .header-link:hover {
+            text-decoration: underline;
+            opacity: 0.85;
+        }
+
+        /* All Other Hyperlinked Text: Indigo Velvet (#533A7B) */
+        a:not(.btn):not(.navbar-brand):not(.header-link):not(h1 a):not(h2 a):not(h3 a):not(h4 a):not(h5 a):not(h6 a) {
+            color: var(--indigo-velvet);
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        a:not(.btn):not(.navbar-brand):not(.header-link):not(h1 a):not(h2 a):not(h3 a):not(h4 a):not(h5 a):not(h6 a):hover {
+            color: var(--blackberry-cream);
+        }
+
+        /* Navbar & Footer on Powder Blue */
+        .navbar-guild {
+            background-color: var(--powder-blue);
+            border-bottom: 2px solid var(--blackberry-cream);
+            box-shadow: 0 3px 10px rgba(37, 23, 26, 0.2);
+        }
+
+        .navbar-brand {
+            color: var(--blackberry-cream) !important;
+            font-weight: 800;
+            font-size: 1.4rem;
+            text-decoration: none !important;
+        }
+
+        .navbar-guild .nav-link {
+            color: var(--indigo-velvet) !important;
+            text-decoration: none !important;
+            font-weight: 600;
+        }
+        .navbar-guild .nav-link:hover {
+            color: var(--blackberry-cream) !important;
+            text-decoration: underline !important;
+        }
+
+        .footer-guild {
+            background-color: var(--powder-blue);
+            color: var(--coffee-bean);
+            border-top: 2px solid var(--blackberry-cream);
+        }
+
+        /* Light Element Cards & Containers: Powder Blue (#98C1D9) */
+        .guild-card {
+            background-color: var(--powder-blue);
+            border: 2px solid var(--blackberry-cream);
+            border-radius: 8px;
+            box-shadow: 0 6px 16px rgba(37, 23, 26, 0.25);
+            color: var(--coffee-bean);
+        }
+
+        .guild-card-header {
+            background-color: var(--powder-blue-tint);
+            border-bottom: 1px solid var(--indigo-velvet);
+            padding: 0.75rem 1.25rem;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+        }
+
+        /* Palette Buttons */
+        .btn-blackberry {
+            background-color: var(--blackberry-cream);
+            color: var(--powder-blue);
+            border: 1px solid var(--coffee-bean);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            text-decoration: none !important;
+        }
+        .btn-blackberry:hover {
+            background-color: var(--indigo-velvet);
+            color: #ffffff;
+        }
+
+        .btn-indigo {
+            background-color: var(--indigo-velvet);
+            color: var(--powder-blue);
+            border: 1px solid var(--coffee-bean);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            text-decoration: none !important;
+        }
+        .btn-indigo:hover {
+            background-color: var(--blackberry-cream);
+            color: #ffffff;
+        }
+
+        .btn-powder {
+            background-color: var(--powder-blue);
+            color: var(--coffee-bean);
+            border: 2px solid var(--blackberry-cream);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            text-decoration: none !important;
+        }
+        .btn-powder:hover {
+            background-color: var(--powder-blue-tint);
+            color: var(--blackberry-cream);
+        }
+
+        .btn-outline-coffee {
+            background-color: transparent;
+            color: var(--coffee-bean);
+            border: 1px solid var(--coffee-bean);
+            font-weight: 600;
+            text-decoration: none !important;
+        }
+        .btn-outline-coffee:hover {
+            background-color: var(--coffee-bean);
+            color: var(--powder-blue);
+        }
+
+        /* Badges & Dividers */
+        .badge-blackberry {
+            background-color: var(--blackberry-cream);
+            color: var(--powder-blue);
+            font-family: 'Cinzel', serif;
+        }
+
+        .badge-indigo {
+            background-color: var(--indigo-velvet);
+            color: var(--powder-blue);
+        }
+
+        .palette-divider {
+            border: 0;
+            height: 2px;
+            background-color: var(--powder-blue);
+            opacity: 0.7;
+            margin: 1.5rem 0;
+        }
+
+        .card-divider {
+            border-color: var(--indigo-velvet) !important;
+            opacity: 0.35;
+        }
+
+        /* Tables & Form Controls on Powder Blue */
+        .table-guild {
+            color: var(--coffee-bean);
+            --bs-table-bg: transparent;
+            --bs-table-hover-bg: rgba(83, 58, 123, 0.12);
+            border-color: rgba(75, 36, 74, 0.3);
+        }
+        .table-guild thead {
+            background-color: var(--blackberry-cream);
+            color: var(--powder-blue);
+            font-family: 'Cinzel', serif;
+        }
+
+        .guild-card input[type="text"],
+        .guild-card input[type="number"],
+        .guild-card select,
+        .guild-card textarea,
+        .guild-subpanel {
+            background-color: var(--powder-blue-tint);
+            border: 1px solid var(--indigo-velvet);
+            color: var(--coffee-bean);
+        }
+        .guild-card input::placeholder,
+        .guild-card textarea::placeholder {
+            color: rgba(37, 23, 26, 0.65);
+        }
+        .guild-card input:focus,
+        .guild-card select:focus,
+        .guild-card textarea:focus {
+            background-color: #cde3f0;
+            border-color: var(--blackberry-cream);
+            color: var(--coffee-bean);
+            box-shadow: 0 0 0 0.2rem rgba(75, 36, 74, 0.25);
+        }
+        .guild-card input:disabled {
+            background-color: rgba(37, 23, 26, 0.12);
+            color: var(--coffee-bean);
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     {% include 'partials/_navbar.html' %}
 
-    <main>
+    <main class="container pb-5 flex-grow-1">
         {% block content %}{% endblock %}
     </main>
 
     {% include 'partials/_footer.html' %}
 
+    <script src="https://jsdelivr.net"></script>
 </body>
 </html>
+

@@ -1,14 +1,26 @@
 {% extends 'base.html' %}
 
-{% block title %}Delete Item{% endblock %}
+{% block title %}Confirm Removal | West Marches{% endblock %}
 
 {% block content %}
-<h1>Delete Item</h1>
-<p>Are you sure you want to remove <strong>"{{ object.name }}"</strong> from {{ object.character.name }}'s inventory?</p>
-
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Confirm Delete</button>
-    <a href="{% url 'character:detail' object.character.pk %}">Cancel</a>
-</form>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="guild-card p-4 p-md-5 text-center">
+            <i class="bi bi-exclamation-triangle-fill display-4 mb-3" style="color: var(--blackberry-cream);"></i>
+            <h2 class="fw-bold">Discard Item?</h2>
+            <p class="lead mb-4">
+                Are you certain you wish to permanently remove <strong>"{{ object.name }}"</strong> from {{ object.character.name }}'s satchel?
+            </p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'character:detail' object.character.pk %}" class="btn btn-outline-coffee px-4">Keep Item</a>
+                    <button type="submit" class="btn btn-blackberry px-4">
+                        <i class="bi bi-fire me-1"></i>Confirm Deletion
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

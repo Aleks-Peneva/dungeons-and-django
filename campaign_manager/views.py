@@ -26,4 +26,4 @@ class DMScreenView(TemplateView):
         return context
 
 class AboutDMScreenView(TemplateView):
-    template_name = 'campaign_manager/about.html'
+    template_name = 'campaign_manager/old_about.html'

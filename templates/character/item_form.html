@@ -1,14 +1,50 @@
 {% extends 'base.html' %}
 
-{% block title %}{% if object %}Edit Item{% else %}Log New Item{% endif %}{% endblock %}
+{% block title %}{% if object %}Edit Item{% else %}Log New Item{% endif %} | West Marches{% endblock %}
 
 {% block content %}
-<h1>{% if object %}Edit Item: {{ object.name }}{% else %}Log New Item{% endif %}</h1>
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="guild-card p-4 p-md-5">
+            <h2 class="fw-bold border-bottom card-divider pb-3 mb-4">
+                <i class="bi bi-gem me-2"></i>
+                {% if object %}Update Vault Entry: {{ object.name }}{% else %}Log Treasure / Equipment{% endif %}
+            </h2>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save Item</button>
-    <a href="{% url 'character:item-list' %}">Cancel</a>
-</form>
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="mb-3">
+                    {% if field.field.widget.input_type == 'checkbox' %}
+                        <div class="form-check">
+                            {{ field }}
+                            <label class="form-check-label fw-bold" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        </div>
+                    {% else %}
+                        <label class="form-label fw-bold" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                    {% endif %}
+                    {% if field.help_text %}
+                        <div class="form-text small" style="color: var(--coffee-bean);">{{ field.help_text }}</div>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="small fw-bold mt-1" style="color: var(--blackberry-cream);"><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                <div class="d-flex justify-content-between pt-3 border-top card-divider mt-4">
+                    <a href="{% url 'character:item-list' %}" class="btn btn-outline-coffee">Cancel</a>
+                    <button type="submit" class="btn btn-blackberry px-4">
+                        <i class="bi bi-check2-circle me-1"></i>Seal &amp; Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

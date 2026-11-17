@@ -1,45 +1,45 @@
 {% extends 'base.html' %}
 
-{% block title %}West Marches Campaign{% endblock %}
+{% block title %}West Marches Charter | Campaign Rules{% endblock %}
 
 {% block content %}
-<div class="parchment-card p-4 p-md-5">
-    <div class="border-bottom border-secondary-subtle pb-3 mb-4">
-        <h1 class="fw-bold mb-1"><i class="bi bi-book-half text-danger me-2"></i>About West Marches D&amp;D</h1>
-        <p class="lead fst-italic text-muted mb-0">What to keep in mind when leading a West Marches campaign</p>
+<div class="guild-card p-4 p-md-5">
+    <div class="border-bottom card-divider pb-3 mb-4">
+        <h1 class="fw-bold mb-1"><i class="bi bi-book-half me-2"></i>The West Marches Charter</h1>
+        <p class="lead fst-italic mb-0">Standing orders and ledger regulations for frontier expeditions</p>
     </div>
 
     <div class="row g-4">
         <div class="col-md-6">
-            <h4 class="fw-bold"><i class="bi bi-compass text-danger me-2"></i>1. Rotating Expeditions</h4>
+            <h4 class="fw-bold"><i class="bi bi-compass me-2"></i>1. Rotating Expeditions</h4>
             <p>
-                Unlike traditional campaigns with a fixed player character party, the West Marches features a shared persistent world and a larger, rotating pool of players. Players assemble their own parties based on available <strong>Quests</strong> they're interested in.
+                Unlike traditional campaigns with a fixed weekly table, the West Marches features a shared persistent world and a large pool of mercenaries. Players assemble their own parties based on open rumours on the <strong>Quest Board</strong> and schedule expeditions into uncharted hexes.
             </p>
 
-            <h4 class="fw-bold mt-4"><i class="bi bi-skull text-danger me-2"></i>2. Player Character Mortality</h4>
+            <h4 class="fw-bold mt-4"><i class="bi bi-skull me-2"></i>2. Mortality &amp; The Ledger</h4>
             <p>
-                The world of a West Marches campaign is inherently not perfectly balanced, since more frequent players advance quicker. If a quests proves deadly and a player character falls in battle, their status is marked as <strong>Dead</strong>. Fallen heroes' memory is preserved, but they can sadly no longer be assigned to new active quests.
+                The frontier is unforgiving. When an adventurer falls in battle, their status is marked as <strong>Fallen</strong> in the Guild Roster. Fallen heroes remain memorialised in the ledger, though guild rules forbid assigning deceased characters to new active quests.
             </p>
         </div>
 
         <div class="col-md-6">
-            <h4 class="fw-bold"><i class="bi bi-stars text-danger me-2"></i>3. Item Attunement Rules</h4>
+            <h4 class="fw-bold"><i class="bi bi-stars me-2"></i>3. Relic Attunement Rules</h4>
             <p>
-                In accordance with D&amp;D 5th Edition rules, a player character may be attuned to no more than <strong>three (3) magic items</strong> simultaneously. The campaign manager automatically enforces this limit when logging equipment.
+                In accordance with D&amp;D 5th Edition arcane laws, an adventurer may be attuned to no more than <strong>three (3) magic items</strong> simultaneously. The Guild Vault automatically enforces this limit when logging equipment.
             </p>
 
-            <h4 class="fw-bold mt-4"><i class="bi bi-shield-lock text-danger me-2"></i>4. Character Names</h4>
+            <h4 class="fw-bold mt-4"><i class="bi bi-shield-lock me-2"></i>4. True Names</h4>
             <p>
-                In order to avoid confusion at the different forming tables of player (and spare the dungeon master the inevitable constantly repeating annoying jokes), each <strong>Player Character Name</strong> must be unique and may not be altered.
+                Once an adventurer signs the Guild Charter, their <strong>Adventurer Name</strong> is permanently sealed in ink and cannot be altered when updating levels, status, or chronicle notes.
             </p>
         </div>
     </div>
 
-    <hr class="gold-divider">
+    <hr class="card-divider my-4">
 
     <div class="text-center">
-        <a href="{% url 'campaign_manager:dmscreen' %}" class="btn btn-crimson px-4 me-2">Return to DM screen</a>
-        <a href="{% url 'quest:list' %}" class="btn btn-gold px-4">Browse Quest Board</a>
+        <a href="{% url 'campaign_manager:dmscreen' %}" class="btn btn-blackberry px-4 me-2">Return to Guildhall</a>
+        <a href="{% url 'quest:list' %}" class="btn btn-indigo px-4">Browse Quest Board</a>
     </div>
 </div>
 {% endblock %}
