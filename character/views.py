@@ -22,7 +22,7 @@ class CharacterListView(ListView):
 
         if status == 'alive':
             queryset = queryset.filter(alive=True)
-        elif status in ('fallen', 'dead'):
+        elif status == 'fallen':
             queryset = queryset.filter(alive=False)
 
         if sort == 'level_asc':

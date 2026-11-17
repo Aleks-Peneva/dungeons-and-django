@@ -29,7 +29,7 @@ class QuestForm(forms.ModelForm):
             raise ValidationError('You cannot complete this quest without any characters')
 
         if characters:
-            dead = [c.name for c in characters if c.alive == False]
+            fallen = [c.name for c in characters if not c.alive]
             if dead and status in ['DISCOVERED', 'IN_PROGRESS']:
-                raise ValidationError(f'Dead characters must be removed from the quest: {', '.join(dead)}')
+                raise ValidationError(f'Dead characters must be removed from the quest: {', '.join(fallen)}')
             return cleaned_data
