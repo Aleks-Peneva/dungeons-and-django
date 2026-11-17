@@ -1,11 +1,9 @@
 from django.contrib import admin
 from .models import PlayerCharacter, InventoryItem
 
-
 class InventoryItemInline(admin.TabularInline):
     model = InventoryItem
     extra = 1
-
 
 @admin.register(PlayerCharacter)
 class CharacterAdmin(admin.ModelAdmin):

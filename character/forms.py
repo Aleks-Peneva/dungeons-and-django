@@ -5,7 +5,7 @@ from .models import PlayerCharacter, InventoryItem
 class PlayerCharacterCreateForm(forms.ModelForm):
     class Meta:
         model = PlayerCharacter
-        exclude = ['inventory']
+        fields = '__all__'
         labels = {
             'name': 'Character Name',
             'player_name': 'Player Name',
@@ -38,13 +38,14 @@ class PlayerCharacterUpdateForm(PlayerCharacterCreateForm):
         super().__init__(*args, **kwargs)
         self.fields['name'].disabled = True
         self.fields['name'].help_text = 'Character names cannot be modified'
-        # although renaming a character could be valid, e.g. when adding titles, to review
+        # could renaming a character be valid, e.g. when adding titles? to review
+
 
 class InventoryItemForm(forms.ModelForm):
     # used to track if players go over their max 3 items attuned limit
     class Meta:
         model = InventoryItem
-        fields = ['name', 'character', 'quantity', 'requires_attunement', 'is_attuned']
+        fields = '__all__'
         labels = {
             'requires_attunement': 'This item require attunement (max 3 items attuned at a time)',
             'is_attuned': 'This item is currently attuned',

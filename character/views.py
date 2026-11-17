@@ -17,13 +17,18 @@ class CharacterListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        alive = self.request.GET.get('alive')
-        # TODO: maybe sorting
+        status = self.request.GET.get('status')
+        sort = self.request.GET.get('sort')
 
-        if alive == 'true':
+        if status == 'alive':
             queryset = queryset.filter(alive=True)
-        elif alive == 'false':
+        elif status == 'dead':
             queryset = queryset.filter(alive=False)
+
+        if sort == 'level_asc':
+            queryset = queryset.order_by('level', 'name')
+        elif sort == 'name':
+            queryset = queryset.order_by('name')
 
         return queryset
 
