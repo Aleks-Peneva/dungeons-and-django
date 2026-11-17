@@ -125,7 +125,7 @@
                     <li class="list-group-item bg-transparent px-0 border-bottom card-divider">
                         <h6 class="mb-1 fw-bold"><a href="{% url 'quest:detail' quest.pk %}">{{ quest.title }}</a></h6>
                         <div class="small">
-                            {{ quest.region }} &bull; <span class="badge badge-indigo">{{ quest.get_status_display }}</span>
+                            {{ quest.location }} &bull; <span class="badge badge-indigo">{{ quest.get_status_display }}</span>
                         </div>
                     </li>
                     {% endfor %}
