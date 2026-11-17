@@ -91,7 +91,7 @@ The application is built with **Django** and organised into **three cohesive app
 
 ## Environment Variables (`.env.example`)
 
-`west_marches_manager/settings.py` automatically loads variables from a root `.env` file via `python-dotenv` while providing built-in defaults so the project starts immediately after cloning. An **`.env.example`** template is included in the repository root:
+`DungeonsAndDjango/settings.py` automatically loads variables from a root `.env` file via `python-dotenv` while providing built-in defaults so the project starts immediately after cloning. An **`.env.example`** template is included in the repository root:
 
 ```env
 # Django Core Configuration
@@ -103,7 +103,7 @@ ALLOWED_HOSTS=127.0.0.1,localhost
 DB_ENGINE=sqlite3
 
 # Optional PostgreSQL Settings (Only required if DB_ENGINE=postgresql)
-DB_NAME=west_marches_db
+DB_NAME=dungeons_and_django_db
 DB_USER=postgres
 DB_PASSWORD=your_database_password
 DB_HOST=127.0.0.1
@@ -112,7 +112,7 @@ DB_PORT=5432
 
 ### Testing the Custom 404 Page Locally
 Django serves `templates/404.html` automatically for unknown URLs whenever `DEBUG=False`. To verify it locally:
-1. Set `DEBUG=False` in `.env` (or temporarily in `west_marches_manager/settings.py`) and ensure `ALLOWED_HOSTS` includes `127.0.0.1` and `localhost`.
+1. Set `DEBUG=False` in `.env` (or temporarily in `DungeonsAndDjango/settings.py`) and ensure `ALLOWED_HOSTS` includes `127.0.0.1` and `localhost`.
 2. Start the server with `--insecure` so local `static/` assets continue loading:
    ```bash
    python manage.py runserver --insecure
