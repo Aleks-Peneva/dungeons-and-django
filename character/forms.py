@@ -63,8 +63,15 @@ class InventoryItemForm(forms.ModelForm):
             cleaned_data = super().clean()
             character = cleaned_data.get('character')
             is_attuned = cleaned_data.get('is_attuned')
+            requires_attunement = cleaned_data.get('requires_attunement')
 
-            if character and is_attuned:
+            if is_attuned and not requires_attunement:
+                self.add_error(
+                    'is_attuned',
+                    "This item does not require attunement, so you can't attune it."
+                )
+
+            if character and is_attuned and not requires_attunement:
                 attuned_items = character.inventory.filter(is_attuned=True)
                 if self.instance.pk:
                     attuned_items = attuned_items.exclude(pk=self.instance.pk)

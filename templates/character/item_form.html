@@ -47,4 +47,22 @@
         </div>
     </div>
 </div>
+<script>
+    const reqBox = document.getElementById('id_requires_attunement');
+    const attBox = document.getElementById('id_is_attuned');
+
+    function syncAttunementState() {
+        if (!reqBox.checked) {
+            attBox.checked = false;
+            attBox.disabled = true;
+        } else {
+            attBox.disabled = false;
+        }
+    }
+
+    if (reqBox && attBox) {
+        reqBox.addEventListener('change', syncAttunementState);
+        syncAttunementState();
+    }
+</script>
 {% endblock %}

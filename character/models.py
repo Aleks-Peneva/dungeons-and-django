@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.urls import reverse
@@ -87,3 +88,10 @@ class InventoryItem(models.Model):
 
     def get_absolute_url(self):
         return reverse('character:detail', kwargs={'pk': self.character.pk})
+
+    def clean(self):
+        super().clean()
+        if self.is_attuned and not self.requires_attunement:
+            raise ValidationError({
+                'is_attuned': "You can't attune an item that does not require attunement."
+            })
