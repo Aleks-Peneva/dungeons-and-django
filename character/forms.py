@@ -1,5 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.db.models import Sum
+
 from .models import PlayerCharacter, InventoryItem
 
 class PlayerCharacterCreateForm(forms.ModelForm):
@@ -64,6 +66,7 @@ class InventoryItemForm(forms.ModelForm):
             character = cleaned_data.get('character')
             is_attuned = cleaned_data.get('is_attuned')
             requires_attunement = cleaned_data.get('requires_attunement')
+            quantity = cleaned_data.get('quantity') or 1
 
             if is_attuned and not requires_attunement:
                 self.add_error(
@@ -75,7 +78,10 @@ class InventoryItemForm(forms.ModelForm):
                 attuned_items = character.inventory.filter(is_attuned=True)
                 if self.instance.pk:
                     attuned_items = attuned_items.exclude(pk=self.instance.pk)
-                if attuned_items.count() >= 3:
+
+                existing_attuned_count = attuned_items.aggregate(total=Sum('quantity'))['total'] or 0
+
+                if existing_attuned_count + quantity > 3:
                     raise ValidationError(
                         f"{character.name} is already attuned to 3 magic items, they need to unattune from one of them first."
                     )

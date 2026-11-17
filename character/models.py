@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.db.models import Sum
 from django.urls import reverse
 
 class PlayerCharacter(models.Model):
@@ -91,7 +92,27 @@ class InventoryItem(models.Model):
 
     def clean(self):
         super().clean()
+
         if self.is_attuned and not self.requires_attunement:
             raise ValidationError({
                 'is_attuned': "You can't attune an item that does not require attunement."
             })
+
+        if self.character_id and self.is_attuned:
+            attuned_items = InventoryItem.objects.filter(
+                character_id=self.character_id,
+                is_attuned=True,
+            )
+
+            if self.pk:
+                attuned_items = attuned_items.exclude(pk=self.pk)
+
+            existing_attuned_items = attuned_items.aggregate(total=Sum('quantity'))['total'] or 0
+            qty = self.quantity or 1
+
+            if existing_attuned_items + qty > 3:
+                raise ValidationError({
+                    'is_attuned': (
+                        f"{self.character.name} is already attuned to 3 magic items, they need to unattune from one of them first."
+                    )
+                })
